@@ -7,10 +7,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-// builder.Services.AddPredictionEnginePool<ModelInput, ModelOutput>()
-//     .FromUri(modelName:"SentimentAnalysisModel", uri:"https://github.com/PradeepLoganathan/SentimentAnalysisTrainer/blob/f0a74409951fc565a696c79e8490559a6a7adaa8/MLModels/SentimentModel.zip", period: TimeSpan.FromMinutes(1));
+builder.Services.AddPredictionEnginePool<ModelInput, ModelOutput>()
+    .FromUri(modelName:"SentimentAnalysisModel", uri:"https://raw.githubusercontent.com/PradeepLoganathan/SentimentAnalysisAPI/main/SentimentModel.zip", period: TimeSpan.FromMinutes(1));
 
-builder.Services.AddPredictionEnginePool<ModelInput, ModelOutput>().FromFile(modelName: "SentimentAnalysisModel", filePath:"SentimentModel.zip", watchForChanges: true);
+// builder.Services.AddPredictionEnginePool<ModelInput, ModelOutput>().FromFile(modelName: "SentimentAnalysisModel", filePath:"SentimentModel.zip", watchForChanges: true);
 
 var app = builder.Build();
 
