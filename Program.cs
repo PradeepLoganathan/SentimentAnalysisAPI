@@ -24,10 +24,13 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.Map("/", () => Results.Redirect("/swagger"));
+
 app.MapPost("/predict", async ([FromServices] PredictionEnginePool<ModelInput, ModelOutput> predictionEnginePool,[FromBody] ModelInput input) => { 
     var result = await Task.FromResult(predictionEnginePool.Predict(modelName: "SentimentAnalysisModel", input));
     var prediction = Convert.ToBoolean(result.Prediction) ? "Toxic" : "Non Toxic";
     return prediction;
-});
+})
+.WithDescription("The sentiment prediction endpoint")
+.WithOpenApi();
 
 app.Run();
