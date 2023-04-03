@@ -8,6 +8,17 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("MyAllowedOrigins",
+        policy =>
+        {
+            policy.AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+});
+
 builder.Services.AddPredictionEnginePool<ModelInput, ModelOutput>()
     .FromUri(modelName:"SentimentAnalysisModel", uri:"https://raw.githubusercontent.com/PradeepLoganathan/SentimentAnalysisAPI/main/SentimentModel.zip", period: TimeSpan.FromMinutes(1));
 
@@ -15,7 +26,7 @@ builder.Services.AddPredictionEnginePool<ModelInput, ModelOutput>()
 
 var app = builder.Build();
 
-
+app.UseCors("MyAllowedOrigins");
 app.UseSwagger();
 app.UseSwaggerUI(options =>
 {
@@ -35,7 +46,7 @@ app.MapPost("/predict", async ([FromServices] PredictionEnginePool<ModelInput, M
 })
 .WithDescription("The sentiment prediction endpoint")
 .WithName("PredictSentiment")
-.Produces<bool>()
+.Produces<string>()
 .Produces( 404 )
 .Accepts<ModelInput>("application/xml")
 .Accepts<ModelInput>("application/json")
