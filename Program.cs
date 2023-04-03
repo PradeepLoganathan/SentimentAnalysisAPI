@@ -2,11 +2,31 @@ using Microsoft.ML.Data;
 using Microsoft.Extensions.ML;
 using Microsoft.ML;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Version = "v1",
+        Title = "Sentiment Prediction API",
+        Description = "An Tanzu based Web API for predicting toxicity sentiment of text.This API encapsulates a model trained on a minimal dataset and hence provides results with lower degree of accuracy",
+        TermsOfService = new Uri("https://thewidgetstore.com/terms"),
+        Contact = new OpenApiContact
+        {
+            Name = "Development Contact",
+            Url = new Uri("https://thewidgetstore.com/contact")
+        },
+        License = new OpenApiLicense
+        {
+            Name = "Development License",
+            Url = new Uri("https://thewidgetstore.com/license")
+        }
+    });
+});
 
 builder.Services.AddCors(options =>
 {

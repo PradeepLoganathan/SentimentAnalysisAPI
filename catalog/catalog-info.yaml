@@ -1,0 +1,18 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: SentimentAPI
+  description: This API wraps the Sentiment model and serves it using an OPENAPI enabled component.
+  tags:
+    - OpenAPI
+    - API
+    - SentimentAnalysis
+    - dotnet
+  annotations:
+    "backstage.io/kubernetes-label-selector": "app.kubernetes.io/part-of=sentimentapi"
+spec:
+  type: service
+  lifecycle: experimental
+  owner: datascience-team
+  dependsOn: [Component:tanzu-sentimentanalysis1-trainer]
+  system: sentimentanalysis-system
