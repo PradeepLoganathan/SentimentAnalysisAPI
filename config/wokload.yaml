@@ -10,6 +10,15 @@ spec:
   - name: annotations
     value:
       autoscaling.knative.dev/minScale: "1"
+  - name: api_descriptor
+    value:
+      type: openapi
+      location:
+        path: "swagger/v1/swagger.json"
+        baseUrl: " https://sentimentapi-application-ns.cnr.tap.mytanzudev.com"
+      system: sentiment-analysers
+      owner: datascience-team
+      description: "A set of API endpoints for sentiment analysis App."
   - name: gitops_server_address
     value: https://github.com/
   - name: gitops_repository_owner
