@@ -1,6 +1,4 @@
-using Microsoft.ML.Data;
 using Microsoft.Extensions.ML;
-using Microsoft.ML;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
 
@@ -41,6 +39,7 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddPredictionEnginePool<ModelInput, ModelOutput>()
     .FromUri(modelName:"SentimentAnalysisModel", uri:"https://raw.githubusercontent.com/PradeepLoganathan/SentimentAnalysisAPI/main/SentimentModel.zip", period: TimeSpan.FromMinutes(1));
+    
 
 // builder.Services.AddPredictionEnginePool<ModelInput, ModelOutput>().FromFile(modelName: "SentimentAnalysisModel", filePath:"SentimentModel.zip", watchForChanges: true);
 
@@ -58,10 +57,13 @@ app.UseSwaggerUI(options =>
 app.UseHttpsRedirection();
 
 app.Map("/", () => Results.Redirect("/swagger"));
+app.Map("/test",  HandleMapTest);
 
 app.MapPost("/predict", async ([FromServices] PredictionEnginePool<ModelInput, ModelOutput> predictionEnginePool,[FromBody] ModelInput input) => { 
     var result = await Task.FromResult(predictionEnginePool.Predict(modelName: "SentimentAnalysisModel", input));
     var prediction = Convert.ToBoolean(result.Prediction) ? "Toxic" : "Non Toxic";
+    var probability = result.Probability;
+    var score = result.Score;
     return prediction;
 })
 .WithDescription("The sentiment prediction endpoint")
@@ -84,5 +86,16 @@ app.MapPost("/predict", async ([FromServices] PredictionEnginePool<ModelInput, M
 
     return generatedOperation;
 });
+
+static void HandleMapTest(IApplicationBuilder app)
+{
+    DotnetServiceBinding bind = new DotnetServiceBinding();
+    var bindings = bind.GetBindings("mysql1");
+    foreach (var item in bindings)
+    {
+        System.Console.WriteLine( item.Key);
+        System.Console.WriteLine( item.Value);
+    }
+}
 
 app.Run();
