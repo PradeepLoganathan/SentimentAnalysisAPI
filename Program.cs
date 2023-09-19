@@ -1,6 +1,7 @@
 using Microsoft.Extensions.ML;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -57,7 +58,7 @@ app.UseSwaggerUI(options =>
 app.UseHttpsRedirection();
 
 app.Map("/", () => Results.Redirect("/swagger"));
-app.Map("/test",  HandleMapTest);
+app.Map("/test",  (string root) => HandleMapTest(root));
 
 app.MapPost("/predict", async ([FromServices] PredictionEnginePool<ModelInput, ModelOutput> predictionEnginePool,[FromBody] ModelInput input) => { 
     var result = await Task.FromResult(predictionEnginePool.Predict(modelName: "SentimentAnalysisModel", input));
@@ -87,15 +88,19 @@ app.MapPost("/predict", async ([FromServices] PredictionEnginePool<ModelInput, M
     return generatedOperation;
 });
 
-static void HandleMapTest(IApplicationBuilder app)
+static string HandleMapTest(string root)
 {
     DotnetServiceBinding bind = new DotnetServiceBinding();
-    var bindings = bind.GetBindings("mysql1");
+    var bindings = bind.GetBindings(root);
+     StringBuilder sb = new StringBuilder();
     foreach (var item in bindings)
     {
-        System.Console.WriteLine( item.Key);
-        System.Console.WriteLine( item.Value);
+        sb.Append(item.Key);
+        sb.Append("--");
+        sb.Append( item.Value);
+        sb.Append(";");
     }
+    return sb.ToString();
 }
 
 app.Run();

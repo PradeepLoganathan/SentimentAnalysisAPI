@@ -23,7 +23,7 @@ using System.IO;
             }
         }
 
-        private static void ProcessDirectoryTree(string directory, string type)
+        private void ProcessDirectoryTree(string directory, string type)
         {
             // Walk down the directory tree and include ONLY the files
             // in the directory where the file named "type" exists
@@ -50,7 +50,7 @@ using System.IO;
             }
         }
 
-        private static void GetFileContents(string filename)
+        private void GetFileContents(string filename)
         {
             // Get contents of file
             string value = System.IO.File.ReadAllText(filename);
