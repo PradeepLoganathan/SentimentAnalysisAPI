@@ -58,7 +58,6 @@ app.UseSwaggerUI(options =>
 app.UseHttpsRedirection();
 
 app.Map("/", () => Results.Redirect("/swagger"));
-app.Map("/test",  (string root) => HandleMapTest(root));
 
 app.MapPost("/predict", async ([FromServices] PredictionEnginePool<ModelInput, ModelOutput> predictionEnginePool,[FromBody] ModelInput input) => { 
     var result = await Task.FromResult(predictionEnginePool.Predict(modelName: "SentimentAnalysisModel", input));
@@ -88,19 +87,5 @@ app.MapPost("/predict", async ([FromServices] PredictionEnginePool<ModelInput, M
     return generatedOperation;
 });
 
-static string HandleMapTest(string root)
-{
-    DotnetServiceBinding bind = new DotnetServiceBinding();
-    var bindings = bind.GetBindings(root);
-     StringBuilder sb = new StringBuilder();
-    foreach (var item in bindings)
-    {
-        sb.Append(item.Key);
-        sb.Append("--");
-        sb.Append( item.Value);
-        sb.Append(";");
-    }
-    return sb.ToString();
-}
 
 app.Run();
