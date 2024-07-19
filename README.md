@@ -1,7 +1,7 @@
 
 # Sentiment Analysis API
 
-This repository provides an API for performing sentiment analysis on text data using a machine learning model. The API is built using .NET and leverages ML.NET for sentiment analysis.
+This repository provides an API for performing sentiment analysis on text data using a machine learning model. The API is built using .NET and leverages ML.NET for sentiment analysis. This project serves as a demonstration of how a model can be embedded into an API using the Tanzu Application Platform.
 
 ## Table of Contents
 
@@ -18,13 +18,14 @@ This repository provides an API for performing sentiment analysis on text data u
 
 ## Introduction
 
-The Sentiment Analysis API allows developers to integrate sentiment analysis capabilities into their applications. It classifies text as positive or negative based on the sentiment detected.
+The Sentiment Analysis API allows developers to integrate sentiment analysis capabilities into their applications. It classifies text as positive or negative based on the sentiment detected. This project demonstrates how to embed a model into an API using the Tanzu Application Platform.
 
 ## Features
 
 - Analyze text sentiment using a pre-trained ML.NET model.
 - Easy-to-use RESTful API.
 - JSON requests and responses.
+- Demonstrates model embedding with Tanzu Application Platform.
 
 ## Installation
 
@@ -88,16 +89,6 @@ Follow these steps to set up and run the Sentiment Analysis API:
 ## Configuration
 
 The application can be configured using the `appsettings.json` file or environment variables. Ensure that the model path is correctly set in the configuration file.
-
-## Running Tests
-
-To run the tests, use the following command:
-
-```bash
-dotnet test
-```
-
-Ensure you have added your test cases in the `tests` directory.
 
 ## Contributing
 
